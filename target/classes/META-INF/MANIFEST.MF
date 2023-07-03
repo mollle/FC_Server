@@ -1,0 +1,40 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 17
+Class-Path: firebase-admin-9.2.0.jar google-api-client-2.2.0.jar google-
+ oauth-client-1.34.1.jar google-http-client-gson-1.42.3.jar google-http-
+ client-apache-v2-1.42.3.jar google-api-client-gson-2.2.0.jar google-htt
+ p-client-1.43.1.jar jsr305-3.0.2.jar error_prone_annotations-2.18.0.jar
+  j2objc-annotations-1.3.jar opencensus-api-0.31.1.jar opencensus-contri
+ b-http-util-0.31.1.jar api-common-2.12.0.jar auto-value-annotations-1.1
+ 0.1.jar javax.annotation-api-1.3.2.jar google-auth-library-oauth2-http-
+ 1.17.0.jar google-auth-library-credentials-1.17.0.jar google-cloud-stor
+ age-2.22.4.jar failureaccess-1.0.1.jar listenablefuture-9999.0-empty-to
+ -avoid-conflict-with-guava.jar google-http-client-jackson2-1.43.1.jar g
+ oogle-api-services-storage-v1-rev20230301-2.0.0.jar gson-2.10.1.jar goo
+ gle-cloud-core-2.19.0.jar google-cloud-core-http-2.19.0.jar google-http
+ -client-appengine-1.43.1.jar gax-httpjson-0.114.0.jar google-cloud-core
+ -grpc-2.19.0.jar gax-2.29.0.jar gax-grpc-2.29.0.jar grpc-alts-1.55.1.ja
+ r grpc-grpclb-1.55.1.jar conscrypt-openjdk-uber-2.5.2.jar grpc-auth-1.5
+ 5.1.jar grpc-protobuf-1.55.1.jar grpc-protobuf-lite-1.55.1.jar grpc-con
+ text-1.55.1.jar proto-google-iam-v1-1.15.0.jar protobuf-java-3.23.2.jar
+  protobuf-java-util-3.23.2.jar proto-google-common-protos-2.20.0.jar th
+ reetenbp-1.6.8.jar proto-google-cloud-storage-v2-2.22.4-alpha.jar grpc-
+ google-cloud-storage-v2-2.22.4-alpha.jar gapic-google-cloud-storage-v2-
+ 2.22.4-alpha.jar jackson-core-2.14.2.jar grpc-api-1.55.1.jar grpc-netty
+ -shaded-1.55.1.jar perfmark-api-0.26.0.jar grpc-core-1.55.1.jar annotat
+ ions-4.1.1.4.jar animal-sniffer-annotations-1.23.jar grpc-stub-1.55.1.j
+ ar grpc-googleapis-1.55.1.jar checker-qual-3.32.0.jar grpc-xds-1.55.1.j
+ ar opencensus-proto-0.2.0.jar grpc-services-1.55.1.jar re2j-1.6.jar grp
+ c-rls-1.55.1.jar google-cloud-firestore-3.13.0.jar proto-google-cloud-f
+ irestore-v1-3.13.0.jar proto-google-cloud-firestore-bundle-v1-3.13.0.ja
+ r opencensus-contrib-grpc-util-0.31.1.jar guava-31.1-jre.jar netty-code
+ c-http-4.1.94.Final.jar netty-common-4.1.94.Final.jar netty-buffer-4.1.
+ 94.Final.jar netty-codec-4.1.94.Final.jar netty-handler-4.1.94.Final.ja
+ r netty-resolver-4.1.94.Final.jar netty-transport-native-unix-common-4.
+ 1.94.Final.jar netty-transport-4.1.94.Final.jar jeromq-0.5.3.jar jnacl-
+ 1.0.0.jar slf4j-api-1.7.32.jar logback-classic-1.2.6.jar logback-core-1
+ .2.6.jar httpclient-4.5.14.jar httpcore-4.4.16.jar commons-logging-1.2.
+ jar commons-codec-1.11.jar
+Main-Class: main.Start
+Created-By: Maven Integration for Eclipse
+
