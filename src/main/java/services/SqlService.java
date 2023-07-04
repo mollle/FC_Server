@@ -15,7 +15,7 @@ import classes.Coordinate;
 
 public class SqlService {
 
-	private static final String sqlContainerIP = "172.17.0.2";
+	private static final String sqlContainerIP = "172.17.0.3";
 	
 	private static final String url = "jdbc:sqlserver://"+sqlContainerIP+";databaseName=master";
 
