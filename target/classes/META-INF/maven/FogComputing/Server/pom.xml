@@ -6,12 +6,11 @@
 	<artifactId>Server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
+	<properties>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>com.google.firebase</groupId>
-			<artifactId>firebase-admin</artifactId>
-			<version>9.2.0</version>
-		</dependency>
 		<dependency>
 			<groupId>org.zeromq</groupId>
 			<artifactId>jeromq</artifactId>
@@ -28,9 +27,9 @@
 			<version>1.2.6</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.14</version>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>9.4.0.jre11</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -53,10 +52,14 @@
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.3.2</version>
 				<configuration>
+
 					<to>
-						<image>gcr.io/fogcomputing-391406/mitfirebasetest</image>
+						<image>gcr.io/fogcomputing-391406/server</image>
 					</to>
 					<container>
+						<jvmFlags>
+							<jvmFlag>--enable-preview</jvmFlag>
+						</jvmFlags>
 						<ports>
 							<port>8080</port>
 						</ports>

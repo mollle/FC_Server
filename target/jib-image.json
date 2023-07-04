@@ -1,1 +1,1 @@
-{"image":"gcr.io/fogcomputing-391406/mitfirebasetest","imageId":"sha256:b3b0ab2a38a54e5db863bc9aabb6b150874295aab9fb69eb2bc5fd339067a6d8","imageDigest":"sha256:f5c5d95c6c79b792ba213201d7c03f602fa3273d0797bd2cf23faa6c3ebef68f","tags":["latest"],"imagePushed":true}
+{"image":"gcr.io/fogcomputing-391406/server","imageId":"sha256:373e55486793fe51521bfe3dbb0a69d02826711b3a1e0df1c6041a82cbfb52ca","imageDigest":"sha256:9739271167c32b99d775d94593005c3a29e427c2d7ca44816753759b36c4437d","tags":["latest"],"imagePushed":true}
