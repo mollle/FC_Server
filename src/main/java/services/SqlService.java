@@ -17,7 +17,7 @@ import classes.Coordinate.Type;
 
 public class SqlService {
 
-	private static final String sqlContainerIP = "localhost";
+	private static final String sqlContainerIP = "172.17.0.2";
 
 	private static final String url = "jdbc:sqlserver://" + sqlContainerIP + ";databaseName=master";
 
@@ -42,7 +42,7 @@ public class SqlService {
 			this.connection = DriverManager.getConnection(url, username, password);
 			logger.info("Connecting to SQL server... DONE");
 		} catch (SQLException e) {
-			logger.error("Can't connect to sql server");
+			logger.error("Can't connect to SQL server");
 			e.printStackTrace();
 		}
 	}
@@ -50,9 +50,8 @@ public class SqlService {
 	// erstellt 4 tables für traffic, low, medium, high mit den zeilen latidude,
 	// longitude und time
 	public void initTables() {
-
 		logger.info("Init tables...");
-
+//Code from ChatGPT...............................................
 		try (Statement statement = connection.createStatement()) {
 
 			// Tabelle für TRAFFIC
@@ -82,6 +81,8 @@ public class SqlService {
 					+ "    [Timestamp] DATETIME NOT NULL,\n" + "    [Latitude] FLOAT NOT NULL,\n"
 					+ "    [Longitude] FLOAT NOT NULL\n" + ")";
 			statement.execute(createHighTableQuery);
+			
+//................................................................
 
 			logger.info("Init tables... DONE");
 
@@ -90,24 +91,24 @@ public class SqlService {
 		}
 	}
 
+	// Speichere das Coordinate-Objekt in der entsprechenden Tabelle
 	public void saveCoordinate(Coordinate coordinate) {
-
 		if (coordinate == null) {
 			logger.error("Error creating Coordinate object from message");
 			return;
 		}
-
 		String tableName = coordinate.getType().toString();
 		if (tableName.equals(Type.SMOOTH.toString())) {
 			logger.error("There is no table \"SMOOTH\"");
 		}
-		// Speichere das Coordinate-Objekt in der entsprechenden Tabelle
+//Code from ChatGPT...............................................
 		String insertQuery = "INSERT INTO " + tableName + " (Timestamp, Latitude, Longitude) VALUES (?, ?, ?)";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
 			preparedStatement.setTimestamp(1, new Timestamp(coordinate.getTimestamp().getTime()));
 			preparedStatement.setDouble(2, coordinate.getLatitude());
 			preparedStatement.setDouble(3, coordinate.getLongitude());
 			preparedStatement.executeUpdate();
+//................................................................
 			logger.info("Coordinate saved to table: " + tableName);
 		} catch (SQLException e) {
 			logger.error("Error saving coordinate to table: " + tableName);
@@ -130,27 +131,24 @@ public class SqlService {
 	}
 
 	private Boolean getCoordinatesWithinRadius(Coordinate coordinate, int radiusInM, Type type) {
-	
 		//erstmal alle einträge holen in einem umkreis von 1.0
 		 try (PreparedStatement statement = connection.prepareStatement(
                  "SELECT * FROM [dbo].["+type.toString()+"] " +
                  "WHERE ABS(Latitude - ?) + ABS(Longitude - ?) <= 1")) {
         statement.setDouble(1, coordinate.getLatitude());
         statement.setDouble(2, coordinate.getLongitude());
-
         try (ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
+            	//sobald eine Koordinate im radius liegt returnen
             			if(Coordinate.calculateDistance(resultSet.getDouble("Latitude"), resultSet.getDouble("Longitude"),coordinate.getLatitude(), coordinate.getLongitude())*1000<radiusInM){
             				return true;
             			};
 				}
             return false;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return false;
 	}
 
