@@ -1,6 +1,8 @@
 package main;
 
 
+import java.nio.charset.Charset;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeromq.SocketType;
@@ -35,6 +37,7 @@ public class Start {
 					ZFrame frame = request.removeFirst();
 					byte[] messageBytes = frame.getData();
 					Coordinate coordinate = Coordinate.fromBytes(messageBytes);
+					logger.info("Got coordinate: " + coordinate.toString());
 					sqlService.saveCoordinate(coordinate);
 					if (coordinate.getType() == Type.TRAFFIC) {
 						lastTraffic = coordinate;
@@ -45,8 +48,8 @@ public class Start {
 				} else {
 					request.add("noTraffic");
 				}
+				logger.info("Send response with content: " + request.getFirst().getString(Charset.defaultCharset()));
 				request.send(socket);
-				logger.info("Send response with content: "+request.toString());
 				lastTraffic = null;
 			}
 		}

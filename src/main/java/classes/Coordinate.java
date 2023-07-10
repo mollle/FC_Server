@@ -105,7 +105,13 @@ public class Coordinate implements Serializable  {
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-	
+
+
+	public String toString() {
+		return "Coordinate [latitude=" + latitude + ", longitude=" + longitude + ", type=" + type.name() + ", timestamp="
+				+ timestamp + "]";
+	}
+
 	private static final Logger logger = LoggerFactory.getLogger(Coordinate.class);
 
 }
