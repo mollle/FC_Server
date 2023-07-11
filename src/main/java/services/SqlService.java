@@ -26,7 +26,7 @@ public class SqlService {
 
 	private static final String username = "sa";
 
-	private static final String password = "notAdmin.23";
+	private static final String password = "";
 
 	private static final Logger logger = LoggerFactory.getLogger(SqlService.class);
 
