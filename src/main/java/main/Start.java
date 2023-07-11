@@ -45,8 +45,14 @@ public class Start {
 				}
 				if (lastCoordinate != null) {
 					List<Coordinate> coordinatesInRadius = sqlService.getCoordinatesWithinRadius(lastCoordinate, radiusThreshhold);
-					for (Coordinate coordinate : coordinatesInRadius) {
-						request.add(coordinate.toBytes());
+					if(coordinatesInRadius.size() > 0){
+						for (Coordinate coordinate : coordinatesInRadius) {
+							request.add(coordinate.toBytes());
+						}
+					}else{
+						//send something if no coordinates have been found as to not break the protocol
+						lastCoordinate.setType(Coordinate.Type.SMOOTH);
+						request.add(lastCoordinate.toBytes());
 					}
 					logger.info("Send response with " + coordinatesInRadius.size() + " coordinates");
 				}else {
