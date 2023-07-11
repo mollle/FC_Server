@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -81,7 +84,7 @@ public class SqlService {
 					+ "    [Timestamp] DATETIME NOT NULL,\n" + "    [Latitude] FLOAT NOT NULL,\n"
 					+ "    [Longitude] FLOAT NOT NULL\n" + ")";
 			statement.execute(createHighTableQuery);
-			
+
 //................................................................
 
 			logger.info("Init tables... DONE");
@@ -116,40 +119,42 @@ public class SqlService {
 		}
 	}
 
-	// Checkt jeden Table in absteigenden Gefahrenstufen ob es Einträge im Radius
-	// gibt, die höchste Gefahrenstufe wird returnt
-	public Type getDangerLevel(Coordinate centerCoordinate, int radiusIn100m) {
-		if (getCoordinatesWithinRadius(centerCoordinate, radiusIn100m, Type.HIGH)) {
-			return Type.HIGH;
-		} else if (getCoordinatesWithinRadius(centerCoordinate, radiusIn100m, Type.MEDIUM)) {
-			return Type.MEDIUM;
-		} else if (getCoordinatesWithinRadius(centerCoordinate, radiusIn100m, Type.LOW)) {
-			return Type.LOW;
-		} else {
-			return Type.SMOOTH;
-		}
+	// Holt aus jeder Table alle Einträge im radius
+	public List<Coordinate> getCoordinatesWithinRadius(Coordinate centerCoordinate, int radiusInM) {
+		List<Coordinate> coordinatesList = new ArrayList<>();
+		coordinatesList.addAll(getCoordinatesWithinRadius(centerCoordinate, radiusInM, Type.HIGH));
+		coordinatesList.addAll(getCoordinatesWithinRadius(centerCoordinate, radiusInM, Type.MEDIUM));
+		coordinatesList.addAll(getCoordinatesWithinRadius(centerCoordinate, radiusInM, Type.LOW));
+		return coordinatesList;
 	}
 
-	private Boolean getCoordinatesWithinRadius(Coordinate coordinate, int radiusInM, Type type) {
-		//erstmal alle einträge holen in einem umkreis von 1.0
-		 try (PreparedStatement statement = connection.prepareStatement(
-                 "SELECT * FROM [dbo].["+type.toString()+"] " +
-                 "WHERE ABS(Latitude - ?) + ABS(Longitude - ?) <= 1")) {
-        statement.setDouble(1, coordinate.getLatitude());
-        statement.setDouble(2, coordinate.getLongitude());
-        try (ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-            	//sobald eine Koordinate im radius liegt returnen
-            			if(Coordinate.calculateDistance(resultSet.getDouble("Latitude"), resultSet.getDouble("Longitude"),coordinate.getLatitude(), coordinate.getLongitude())*1000<radiusInM){
-            				return true;
-            			};
+	private List<Coordinate> getCoordinatesWithinRadius(Coordinate coordinate, int radiusInM, Type type) {
+		List<Coordinate> coordinatesList = new ArrayList<>();
+		// erstmal alle einträge holen in einem umkreis von 0.5, weil das Filtern direkt
+		// in der SQL Abfrage nicht geklappt hat
+		try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM [dbo].[" + type.toString() + "] "
+				+ "WHERE ABS(Latitude - ?) + ABS(Longitude - ?) <= 0.5")) {
+			statement.setDouble(1, coordinate.getLatitude());
+			statement.setDouble(2, coordinate.getLongitude());
+			try (ResultSet resultSet = statement.executeQuery()) {
+				while (resultSet.next()) {
+					// jetzt nochmal genauer Filtern
+					if ((Coordinate.calculateDistance(resultSet.getDouble("Latitude"), resultSet.getDouble("Longitude"),
+							coordinate.getLatitude(), coordinate.getLongitude()) * 1000) < radiusInM) {
+//						logger.info("dstiance*1000 "+ Coordinate.calculateDistance(resultSet.getDouble("Latitude"), resultSet.getDouble("Longitude"),
+//								coordinate.getLatitude(), coordinate.getLongitude()) * 1000 + " muss kleiner als gegebener radius" + radiusInM +" sein");
+						double latitude = resultSet.getDouble("Latitude");
+						double longitude = resultSet.getDouble("Longitude");
+						Date timestamp = resultSet.getDate("Timestamp");
+						Coordinate newCoordinate = new Coordinate(latitude, longitude, type, timestamp);
+						coordinatesList.add(newCoordinate);
+					}
 				}
-            return false;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return coordinatesList;
 	}
 
 }

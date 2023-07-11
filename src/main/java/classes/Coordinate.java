@@ -69,7 +69,7 @@ public class Coordinate implements Serializable  {
             Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
             Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             Double distance = earthRadiusKm * c;
-            logger.info("distance between "+lat1+","+lon1+" and "+lat2+","+lon2+" is "+distance);
+            logger.info("distance between "+lat1+","+lon1+" and "+lat2+","+lon2+" is "+distance+"km");
             return distance;
         }
 //................................................................

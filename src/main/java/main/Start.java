@@ -1,7 +1,6 @@
 package main;
 
-
-import java.nio.charset.Charset;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMsg;
 
 import classes.Coordinate;
-import classes.Coordinate.Type;
 import services.SqlService;
 
 public class Start {
@@ -20,6 +18,8 @@ public class Start {
 	private static final int port = 8080;
 
 	private static final Logger logger = LoggerFactory.getLogger(Start.class);
+	
+	private static final int radiusThreshhold = 100;
 
 	public static void main(String[] args) {
 
@@ -31,28 +31,30 @@ public class Start {
 			while (!Thread.currentThread().isInterrupted()) {
 				logger.info("Listening on Port " + port);
 				ZMsg request = ZMsg.recvMsg(socket);
-				Coordinate lastTraffic = null;
 				logger.info("Got message with " + request.size() + " frames.");
+				Coordinate lastCoordinate = null;
 				while (request.size() > 0) {
 					ZFrame frame = request.removeFirst();
 					byte[] messageBytes = frame.getData();
 					Coordinate coordinate = Coordinate.fromBytes(messageBytes);
 					logger.info("Got coordinate: " + coordinate.toString());
 					sqlService.saveCoordinate(coordinate);
-					if (coordinate.getType() == Type.TRAFFIC) {
-						lastTraffic = coordinate;
+					if (request.size() == 0) {
+						lastCoordinate = coordinate;
 					}
 				}
-				if (lastTraffic != null) {
-					request.add(sqlService.getDangerLevel(lastTraffic, 300).toString());
-				} else {
-					request.add("noTraffic");
+				if (lastCoordinate != null) {
+					List<Coordinate> coordinatesInRadius = sqlService.getCoordinatesWithinRadius(lastCoordinate, radiusThreshhold);
+					for (Coordinate coordinate : coordinatesInRadius) {
+						request.add(coordinate.toBytes());
+					}
+					logger.info("Send response with " + coordinatesInRadius.size() + " coordinates");
+				}else {
+					logger.info("Send response without coordinates");
 				}
-				logger.info("Send response with content: " + request.getFirst().getString(Charset.defaultCharset()));
 				request.send(socket);
-				lastTraffic = null;
 			}
 		}
-	}
 
+	}
 }
