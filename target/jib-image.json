@@ -1,1 +1,1 @@
-{"image":"gcr.io/fogcomputing-391406/server","imageId":"sha256:376fe3b17ef03b10845888539ad65de8e4adcf6af3c06d278f6e026490f018f3","imageDigest":"sha256:b54e9bf0e2b67fea82f629d4e2399befaf69040f9176b823f63369d558e3728a","tags":["latest"],"imagePushed":true}
+{"image":"gcr.io/fogcomputing-391406/server","imageId":"sha256:cc5b9129fbb28256bd5cece287336c9a42f353bd14c40a357f41b073a33b8980","imageDigest":"sha256:7cb5a1181119ff1fde6884b84c5c80e76d7528c7b838dc8a2f1ac66349bf5226","tags":["latest"],"imagePushed":true}

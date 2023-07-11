@@ -20,7 +20,7 @@ import classes.Coordinate.Type;
 
 public class SqlService {
 
-	private static final String sqlContainerIP = "172.17.0.2";
+	private static final String sqlContainerIP = "34.142.26.27";
 
 	private static final String url = "jdbc:sqlserver://" + sqlContainerIP + ";databaseName=master";
 
@@ -139,10 +139,9 @@ public class SqlService {
 			try (ResultSet resultSet = statement.executeQuery()) {
 				while (resultSet.next()) {
 					// jetzt nochmal genauer Filtern
-					if ((Coordinate.calculateDistance(resultSet.getDouble("Latitude"), resultSet.getDouble("Longitude"),
-							coordinate.getLatitude(), coordinate.getLongitude()) * 1000) < radiusInM) {
-//						logger.info("dstiance*1000 "+ Coordinate.calculateDistance(resultSet.getDouble("Latitude"), resultSet.getDouble("Longitude"),
-//								coordinate.getLatitude(), coordinate.getLongitude()) * 1000 + " muss kleiner als gegebener radius" + radiusInM +" sein");
+					double distance = Coordinate.calculateDistance(resultSet.getDouble("Latitude"), resultSet.getDouble("Longitude"),
+							coordinate.getLatitude(), coordinate.getLongitude()) * 1000;
+					if (distance < radiusInM) {
 						double latitude = resultSet.getDouble("Latitude");
 						double longitude = resultSet.getDouble("Longitude");
 						Date timestamp = resultSet.getDate("Timestamp");
