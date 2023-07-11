@@ -1,4 +1,4 @@
-1. in die GCE VM per SSH einloggen
+1. in die GCE VM per SSH einloggen/die console von einem rechner starten
 
 2. microsoft sql server starten: 
 
@@ -20,10 +20,8 @@ Hier wird das sqlvolume erzeugt, damit die Daten auch beim löschen des Dockers 
    
 	docker run -p 8080:8080  gcr.io/fogcomputing-391406/server:latest
 
-Ab hier läuft alles zur Interaktion mit der App, Schritte 7 und 8 sind zum testen mit dem Java Client der zum testen geschrieben wurde.
+7. Jetzt die IP von der VM/Rechner in SERVER_ADDRESS der Klasse ZmqService im fogbike projekt eintragen
 
-7. mit Java Projekt Client den Client starten (ip adresse anpassen)
 
-8. jetzt sollte im log vom Server Container "Got message..." stehen
 
 
